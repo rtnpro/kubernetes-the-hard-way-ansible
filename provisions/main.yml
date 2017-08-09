@@ -2,3 +2,5 @@
 - include: infrastructure.yml
 
 - include: certs.yml
+
+- include: auth_config.yml

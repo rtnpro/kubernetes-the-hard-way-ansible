@@ -1,0 +1,22 @@
+---
+- name: Get kubectl binary
+  get_url: url=https://storage.googleapis.com/kubernetes-release/release/v1.6.1/bin/linux/amd64/kubectl dest=/usr/bin/kubectl mode=0755
+  sudo: yes
+
+- name: Generate token csv
+  template: src=token.csv.j2 dest={{ ansible_env.HOME }}/token.csv
+
+- name: Fetch token csv to provisioning machine
+  fetch: src=token.csv dest=token.csv flat=yes
+
+- name: Create bootstrap kubeconfig file
+  include: create_bootstrap_kubeconfig.yml
+
+- name: Create kube-proxy kubeconfig file
+  include: create_kube_proxy_kubeconfig.yml
+
+- name: Fetch kubeconfig files to provisioning machine
+  fetch: src={{ item }} dest={{ item }} flat=yes
+  with_items:
+      - bootstrap.kubeconfig
+      - kube-proxy.kubeconfig

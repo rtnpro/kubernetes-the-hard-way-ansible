@@ -1,0 +1,14 @@
+---
+- name: Setup auth config
+  hosts: client
+  roles:
+      - auth_config
+
+- name: Copy kubeconfig files to workers
+  hosts: workers
+  tasks:
+      - name: Copy kubeconfig files to workers
+        copy: src={{ item }} dest="{{ ansible_env.HOME }}/{{ item }}"
+        with_items:
+            - bootstrap.kubeconfig
+            - kube-proxy.kubeconfig
