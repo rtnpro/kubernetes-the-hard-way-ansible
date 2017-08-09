@@ -4,3 +4,5 @@
 - include: certs.yml
 
 - include: auth_config.yml
+
+- include: etcd.yml

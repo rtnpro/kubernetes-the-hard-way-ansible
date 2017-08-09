@@ -1,0 +1,19 @@
+---
+- name: Setup etcd on controller nodes
+  hosts: controllers
+  roles:
+      - etcd
+
+- name: Check if etcd cluster is healthy
+  hosts: controllers[0]
+  tasks:
+      - name: Check if etcd cluster is healthy
+        shell: |
+          etcdctl \
+            --ca-file=/etc/etcd/ca.pem \
+            --cert-file=/etc/etcd/kubernetes.pem \
+            --key-file=/etc/etcd/kubernetes-key.pem \
+            cluster-health
+        register: result
+        failed_when: "'cluster is healthy' not in result.stdout"
+        sudo: yes
