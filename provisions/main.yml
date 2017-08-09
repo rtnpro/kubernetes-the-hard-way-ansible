@@ -1,2 +1,4 @@
 ---
 - include: infrastructure.yml
+
+- include: certs.yml

@@ -1,0 +1,28 @@
+---
+- name: Generate SSH key pair for loab balancer
+  hosts: load_balancer
+  tasks:
+    - name: Generate SSH keypair
+      shell: 'ssh-keygen -t rsa -N "" -f {{ ansible_env.HOME }}/.ssh/id_rsa'
+      run_once: yes
+      ignore_errors: yes
+    - name: Fetch pub key to localhost
+      fetch: src="{{ ansible_env.HOME }}/.ssh/id_rsa.pub" dest=lb_rsa.pub flat=yes
+    
+- name: Generate certs
+  hosts: load_balancer
+  roles:
+    - certs
+
+- name: Copy certs to other nodes
+  hosts:
+    - workers
+    - controllers
+    - client
+  tasks:
+    - name: Enable SSH access from lb to other nodes
+      authorized_key: user=vagrant key="{{ lookup('file', 'lb_rsa.pub') }}"
+
+    - name: Copy certs from lb to other nodes
+      synchronize: src="{{ ansible_env.HOME }}/certs" dest="{{ ansible_env.HOME }}"
+      delegate_to: "{{ groups['load_balancer'][0] }}"

@@ -1,0 +1,40 @@
+{
+  "CN": "kubernetes",
+  "hosts": [
+    "worker0",
+    "worker1",
+    "worker2",
+    "controller0",
+    "controller1",
+    "controller2",
+    "ip-192-168-2-2",
+    "ip-192-168-2-3",
+    "ip-192-168-2-4",
+    "ip-192-168-2-5",
+    "ip-192-168-2-6",
+    "ip-192-168-2-7",
+    "ip-192-168-2-8",
+    "{{ cluster_ip }}",
+    "{{ groups['controllers'][0] }}",
+    "{{ groups['controllers'][1] }}",
+    "{{ groups['controllers'][2] }}",
+    "{{ groups['workers'][0] }}",
+    "{{ groups['workers'][1] }}",
+    "{{ groups['workers'][2] }}",
+    "{{ groups['load_balancer'][0] }}",
+    "127.0.0.1"
+  ],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "US",
+      "L": "Portland",
+      "O": "Kubernetes",
+      "OU": "Cluster",
+      "ST": "Oregon"
+    }
+  ]
+}
