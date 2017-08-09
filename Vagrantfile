@@ -3,6 +3,8 @@ Vagrant.configure("2") do |config|
     libvirt.memory = 512
   end
 
+  config.ssh.insert_key = false
+
   config.vm.define "controller0" do |controller0|
     controller0.vm.box = "centos/7"
     controller0.vm.hostname = "controller0"
@@ -43,6 +45,11 @@ Vagrant.configure("2") do |config|
     load_balancer.vm.box = "centos/7"
     load_balancer.vm.network :private_network, ip: "192.168.2.8"
     load_balancer.vm.hostname = "load-balancer"
+	load_balancer.vm.provision "ansible" do |ansible|
+      ansible.limit = 'all'
+	  ansible.inventory_path = 'provisions/hosts'
+      ansible.playbook = 'provisions/main.yml'
+	end
   end
 
   config.vm.define "client" do |client|
