@@ -1,0 +1,5 @@
+---
+- name: Setup load balancer
+  hosts: load_balancer
+  roles:
+    - load_balancer

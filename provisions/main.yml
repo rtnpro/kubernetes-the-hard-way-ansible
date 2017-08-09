@@ -1,4 +1,2 @@
 ---
-- name: Hello, kubernetes-the-hard-way-ansible
-  debug:
-      msg: "Welcome to setting up kubernetes the hard way with Ansible."
+- include: infrastructure.yml

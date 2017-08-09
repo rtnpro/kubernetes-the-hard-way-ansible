@@ -1,0 +1,3 @@
+---
+kubernetes_public_address: "{{ groups['load_balancer'][0] }}"
+cluster_ip: 10.32.0.1

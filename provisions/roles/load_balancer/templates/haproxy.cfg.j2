@@ -1,0 +1,29 @@
+global
+    log /dev/log    local0
+    log /dev/log    local1 notice
+    chroot /var/lib/haproxy
+    stats socket /run/haproxy/admin.sock mode 660 level admin
+    stats timeout 30s
+    user haproxy
+    group haproxy
+    daemon
+
+defaults
+    log     global
+    mode    tcp
+    option  dontlognull
+    timeout connect 5000
+    timeout client  50000
+    timeout server  50000
+
+frontend k8snodes
+    bind *:6443
+    mode tcp
+    default_backend nodes
+
+backend nodes
+    mode tcp
+    balance roundrobin
+    server controller0 {{ groups['controllers'][0] }}:6443 check
+    server controller1 {{ groups['controllers'][1] }}:6443 check
+    server controller2 {{ groups['controllers'][2] }}:6443 check
